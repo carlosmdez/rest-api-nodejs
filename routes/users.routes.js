@@ -5,7 +5,7 @@ const router = Router()
 
 router.get('/', getUsers)
 router.post('/', addUsers)
-router.patch('/', updateUsers)
+router.put('/:id', updateUsers)
 router.delete('/', deleteUsers)
 
 module.exports = router
