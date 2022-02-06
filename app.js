@@ -8,6 +8,7 @@ const usersRoutes = require('./routes/users.routes')
 
 // Middlewares
 app.use(cors())
+app.use(express.json()) // Lectura y parseo del body
 app.use(express.static('public'))
 
 // Routes

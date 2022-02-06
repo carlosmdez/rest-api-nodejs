@@ -3,7 +3,8 @@ const getUsers = (req, res) => {
 }
 
 const addUsers = (req, res) => {
-  res.json({ ok: true, user: 'User added' })
+  const body = req.body
+  res.json({ ok: true, user: body })
 }
 
 const updateUsers = (req, res) => {
