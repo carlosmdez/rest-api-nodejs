@@ -1,6 +1,6 @@
 {
   "name": "rest-api",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "app.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "url": "git+https://github.com/carlosmdez/rest-api-nodejs.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Carlos Méndez",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/carlosmdez/rest-api-nodejs/issues"
