@@ -1,14 +1,16 @@
 const { Router } = require('express')
 const { check } = require('express-validator')
+const router = Router()
+
+const { validateFields } = require('../middlewares/validation')
+const { roleValidator, emailValidator } = require('../helpers/validators')
+
 const {
   getUsers,
   addUsers,
   updateUsers,
   deleteUsers
 } = require('../controllers/users')
-const { validateFields } = require('../middlewares/validation')
-
-const router = Router()
 
 router.get('/', getUsers)
 router.post(
@@ -19,7 +21,8 @@ router.post(
       min: 6
     }),
     check('email', 'Not a valid email').isEmail(),
-    check('role', 'Not a valid role').isIn(['ADMIN', 'USER']),
+    check('email').custom(emailValidator),
+    check('role').custom(roleValidator),
     validateFields
   ],
   addUsers

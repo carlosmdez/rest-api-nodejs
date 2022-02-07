@@ -10,9 +10,6 @@ const getUsers = (req, res) => {
 const addUsers = async (req, res) => {
   const { name, email, pass, role } = req.body
   const user = new User({ name, email, pass, role })
-  // Verificar si el correo existe
-  const hasEmail = await User.findOne({ email })
-  if (hasEmail) return res.status(400).json({ msg: 'Email already exist' })
   // Encriptar la contraseña
   const salt = bcrypt.genSaltSync()
   user.pass = bcrypt.hashSync(pass, salt)
