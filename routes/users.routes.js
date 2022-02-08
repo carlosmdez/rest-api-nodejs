@@ -16,7 +16,15 @@ const {
   deleteUsers
 } = require('../controllers/users')
 
-router.get('/', getUsers)
+router.get(
+  '/',
+  [
+    check('skip', 'The skip value must be a number').optional().isNumeric(),
+    check('limit', 'The limit value must be a number').optional().isNumeric(),
+    validateFields
+  ],
+  getUsers
+)
 router.post(
   '/',
   [

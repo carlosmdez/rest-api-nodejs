@@ -1,10 +1,16 @@
 const createHash = require('../helpers/bcrypt')
 const User = require('../models/user')
 
-const getUsers = (req, res) => {
-  const query = req.query
+const getUsers = async (req, res) => {
+  const { limit = 5, skip = 0 } = req.query
+  const activeUsers = { state: true }
 
-  res.json({ ok: true, info: query })
+  const [total, users] = await Promise.all([
+    User.count(activeUsers),
+    User.find(activeUsers).skip(skip).limit(limit)
+  ])
+
+  res.json({ total, users })
 }
 
 const addUsers = async (req, res) => {
@@ -24,7 +30,7 @@ const updateUsers = async (req, res) => {
     data.pass = createHash(pass)
   }
   const user = await User.findByIdAndUpdate(id, data)
-  res.json({ ok: true, user })
+  res.json(user)
 }
 
 const deleteUsers = (req, res) => {
