@@ -28,7 +28,7 @@ router.get(
 router.post(
   '/',
   [
-    check('name', 'Name field is mandatory').not().isEmpty(),
+    check('name', 'Name field is required').not().isEmpty(),
     check('pass', 'Password shoud have at least 6 characters').isLength({
       min: 6
     }),
@@ -42,13 +42,21 @@ router.post(
 router.put(
   '/:id',
   [
-    check('id', 'ID no válido').isMongoId(),
+    check('id', 'Not a valid ID').isMongoId(),
     check('id').custom(userValidator),
     check('role').custom(roleValidator),
     validateFields
   ],
   updateUsers
 )
-router.delete('/', deleteUsers)
+router.delete(
+  '/:id',
+  [
+    check('id', 'Not a valid ID').isMongoId(),
+    check('id').custom(userValidator),
+    validateFields
+  ],
+  deleteUsers
+)
 
 module.exports = router

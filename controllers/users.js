@@ -24,7 +24,7 @@ const addUsers = async (req, res) => {
 }
 
 const updateUsers = async (req, res) => {
-  const id = req.params.id
+  const { id } = req.params
   const { _id, pass, google, ...data } = req.body
   if (pass) {
     data.pass = createHash(pass)
@@ -33,7 +33,13 @@ const updateUsers = async (req, res) => {
   res.json(user)
 }
 
-const deleteUsers = (req, res) => {
+const deleteUsers = async (req, res) => {
+  const { id } = req.params
+
+  // Borrándolo físicamente
+  // const user = await User.findByIdAndDelete(id)
+  // Cambiando estado sin borrarlo
+  await User.findByIdAndUpdate(id, { state: false })
   res.json({ ok: true, user: 'User deleted' })
 }
 
