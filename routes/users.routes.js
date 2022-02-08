@@ -3,7 +3,11 @@ const { check } = require('express-validator')
 const router = Router()
 
 const { validateFields } = require('../middlewares/validation')
-const { roleValidator, emailValidator } = require('../helpers/validators')
+const {
+  roleValidator,
+  emailValidator,
+  userValidator
+} = require('../helpers/validators')
 
 const {
   getUsers,
@@ -27,7 +31,16 @@ router.post(
   ],
   addUsers
 )
-router.put('/:id', updateUsers)
+router.put(
+  '/:id',
+  [
+    check('id', 'ID no válido').isMongoId(),
+    check('id').custom(userValidator),
+    check('role').custom(roleValidator),
+    validateFields
+  ],
+  updateUsers
+)
 router.delete('/', deleteUsers)
 
 module.exports = router

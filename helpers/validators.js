@@ -15,4 +15,11 @@ const emailValidator = async (email = '') => {
   }
 }
 
-module.exports = { roleValidator, emailValidator }
+const userValidator = async id => {
+  const user = await User.findById(id)
+  if (!user) {
+    throw new Error(`User with ID: ${id} not found`)
+  }
+}
+
+module.exports = { roleValidator, emailValidator, userValidator }

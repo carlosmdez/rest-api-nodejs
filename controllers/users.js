@@ -19,7 +19,7 @@ const addUsers = async (req, res) => {
 
 const updateUsers = async (req, res) => {
   const id = req.params.id
-  const { pass, google, ...data } = req.body
+  const { _id, pass, google, ...data } = req.body
   if (pass) {
     data.pass = createHash(pass)
   }
