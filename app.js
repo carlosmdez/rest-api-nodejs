@@ -6,6 +6,7 @@ const app = express()
 const port = process.env.PORT
 
 const usersRoutes = require('./routes/users.routes')
+const authRoutes = require('./routes/auth.routes')
 
 // DB Connection
 mongoose.connect(process.env.MONGODB_CNN)
@@ -17,6 +18,7 @@ app.use(express.static('public'))
 
 // Routes
 app.use('/api/users', usersRoutes)
+app.use('/api/auth', authRoutes)
 
 // Listen
 app.listen(port, () => {

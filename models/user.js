@@ -21,7 +21,7 @@ const UserSchema = Schema({
     type: String,
     required: true
   },
-  state: {
+  status: {
     type: Boolean,
     default: true
   },
@@ -32,7 +32,8 @@ const UserSchema = Schema({
 })
 
 UserSchema.methods.toJSON = function () {
-  const { __v, pass, ...user } = this.toObject()
+  const { __v, pass, _id, ...user } = this.toObject()
+  user.uid = _id
   return user
 }
 

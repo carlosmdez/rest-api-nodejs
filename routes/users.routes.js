@@ -8,7 +8,6 @@ const {
   emailValidator,
   userValidator
 } = require('../helpers/validators')
-
 const {
   getUsers,
   addUsers,

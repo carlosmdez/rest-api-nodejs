@@ -1,9 +1,10 @@
-const createHash = require('../helpers/bcrypt')
 const User = require('../models/user')
+
+const { createHash } = require('../helpers/bcrypt')
 
 const getUsers = async (req, res) => {
   const { limit = 5, skip = 0 } = req.query
-  const activeUsers = { state: true }
+  const activeUsers = { status: true }
 
   const [total, users] = await Promise.all([
     User.count(activeUsers),
@@ -39,7 +40,7 @@ const deleteUsers = async (req, res) => {
   // Borrándolo físicamente
   // const user = await User.findByIdAndDelete(id)
   // Cambiando estado sin borrarlo
-  await User.findByIdAndUpdate(id, { state: false })
+  await User.findByIdAndUpdate(id, { status: false })
   res.json({ ok: true, user: 'User deleted' })
 }
 
