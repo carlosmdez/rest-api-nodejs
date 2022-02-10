@@ -2,7 +2,8 @@ const { Router } = require('express')
 const { check } = require('express-validator')
 const router = Router()
 
-const { validateFields } = require('../middlewares/validation')
+const { validateFields, isAdminRole, allowRoles } = require('../middlewares/validation')
+const { validateJWT } = require('../helpers/jwt')
 const {
   roleValidator,
   emailValidator,
@@ -51,6 +52,9 @@ router.put(
 router.delete(
   '/:id',
   [
+    validateJWT,
+    // isAdminRole,
+    allowRoles('ADMIN'),
     check('id', 'Not a valid ID').isMongoId(),
     check('id').custom(userValidator),
     validateFields

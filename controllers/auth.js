@@ -11,7 +11,7 @@ const login = async (req, res) => {
     if (!user?.status) {
       return res
         .status(400)
-        .json({ ok: false, message: 'User / Password incorrect (mail)' })
+        .json({ ok: false, message: 'User / Password incorrect' })
     }
 
     // Verify password
@@ -19,7 +19,7 @@ const login = async (req, res) => {
     if (!isValidPass) {
       return res
         .status(400)
-        .json({ ok: false, message: 'User / Password incorrect (pass)' })
+        .json({ ok: false, message: 'User / Password incorrect' })
     }
 
     // Generate JWT

@@ -40,8 +40,8 @@ const deleteUsers = async (req, res) => {
   // Borrándolo físicamente
   // const user = await User.findByIdAndDelete(id)
   // Cambiando estado sin borrarlo
-  await User.findByIdAndUpdate(id, { status: false })
-  res.json({ ok: true, user: 'User deleted' })
+  const user = await User.findByIdAndUpdate(id, { status: false })
+  res.json({ ok: true, user})
 }
 
 module.exports = { getUsers, addUsers, updateUsers, deleteUsers }
