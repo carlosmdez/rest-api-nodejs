@@ -2,6 +2,7 @@ const User = require('../models/user')
 
 const { validatePassword } = require('../helpers/bcrypt')
 const { generateJWT } = require('../helpers/jwt')
+const { googleVerify } = require('../helpers/google-auth')
 
 const login = async (req, res) => {
   const { email, pass } = req.body
@@ -32,4 +33,30 @@ const login = async (req, res) => {
   }
 }
 
-module.exports = { login }
+const googleSignIn = async (req, res) => {
+  const { id_token } = req.body
+  try {
+    const { name, picture, email } = await googleVerify(id_token)
+    let user = await User.findOne({ email })
+    if (!user) {
+      const data = {
+        name,
+        email,
+        pass: '1234',
+        img: picture,
+        googleAuth: true
+      }
+      user = new User(data)
+      await user.save()
+    } else if (!user.status) {
+      return res.status(401).json({ ok: false, message: 'Contact support' })
+    }
+    const token = await generateJWT(user.id)
+    res.json({ ok: true, user, token })
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ ok: false, message: 'Cannot verify Google Token' })
+  }
+}
+
+module.exports = { login, googleSignIn }
