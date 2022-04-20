@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-const User = require('../models/user')
+const { User } = require('../models')
 
 const generateJWT = (uid = '') => {
   return new Promise((resolve, reject) => {
@@ -20,10 +20,12 @@ const generateJWT = (uid = '') => {
 }
 
 const validateJWT = async (req, res, next) => {
-  const token = req.header('Authorization')
+  const authToken = req.header('Authorization')
   const secret = process.env.SECRETKEY
-  if (!token) return res.status(401).json({ message: 'Unauthorized' })
+  if (!authToken || !authToken.includes('Bearer '))
+    return res.status(401).json({ message: 'Unauthorized' })
   try {
+    const token = authToken.replace('Bearer ', '')
     const { uid } = jwt.verify(token, secret)
     const authUser = await User.findById(uid)
     if (!authUser?.status)

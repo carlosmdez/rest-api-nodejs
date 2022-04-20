@@ -1,5 +1,4 @@
-const User = require('../models/user')
-const Role = require('../models/role')
+const { User, Role, Category } = require('../models')
 
 const roleValidator = async (role = '') => {
   const validRole = await Role.findOne({ role })
@@ -16,10 +15,30 @@ const emailValidator = async (email = '') => {
 }
 
 const userValidator = async id => {
-  const user = await User.findById(id)
-  if (!user) {
+  try {
+    const user = await User.findById(id)
+    if (!user) {
+      throw new Error(`User with ID: ${id} not found`)
+    }
+  } catch (error) {
     throw new Error(`User with ID: ${id} not found`)
   }
 }
 
-module.exports = { roleValidator, emailValidator, userValidator }
+const categoryValidator = async id => {
+  try {
+    const category = await Category.findById(id)
+    if (!category) {
+      throw new Error(`Category with ID: ${id} not found`)
+    }
+  } catch (error) {
+    throw new Error(`Category with ID: ${id} not found`)
+  }
+}
+
+module.exports = {
+  roleValidator,
+  emailValidator,
+  userValidator,
+  categoryValidator,
+}

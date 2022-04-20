@@ -1,4 +1,4 @@
-const User = require('../models/user')
+const { User } = require('../models')
 
 const { createHash } = require('../helpers/bcrypt')
 
@@ -21,7 +21,7 @@ const addUsers = async (req, res) => {
   user.pass = createHash(pass)
   // Guardar usuario en DB
   await user.save()
-  res.json({ ok: true, user })
+  res.status(201).json({ ok: true, user })
 }
 
 const updateUsers = async (req, res) => {

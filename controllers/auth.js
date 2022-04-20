@@ -1,4 +1,4 @@
-const User = require('../models/user')
+const { User } = require('../models')
 
 const { validatePassword } = require('../helpers/bcrypt')
 const { generateJWT } = require('../helpers/jwt')
@@ -44,7 +44,7 @@ const googleSignIn = async (req, res) => {
         email,
         pass: '1234',
         img: picture,
-        googleAuth: true
+        googleAuth: true,
       }
       user = new User(data)
       await user.save()
