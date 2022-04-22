@@ -9,6 +9,7 @@ const usersRoutes = require('./routes/users.routes')
 const authRoutes = require('./routes/auth.routes')
 const categoriesRoutes = require('./routes/categories.routes')
 const productsRoutes = require('./routes/products.routes')
+const searchRoutes = require('./routes/search.routes')
 
 // DB Connection
 mongoose.connect(process.env.MONGODB_CNN)
@@ -23,6 +24,7 @@ app.use('/api/users', usersRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/categories', categoriesRoutes)
 app.use('/api/products', productsRoutes)
+app.use('/api/search', searchRoutes)
 
 // Listen
 app.listen(port, () => {
