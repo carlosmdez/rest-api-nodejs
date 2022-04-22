@@ -1,4 +1,4 @@
-const { User, Role, Category } = require('../models')
+const { User, Role, Category, Product } = require('../models')
 
 const roleValidator = async (role = '') => {
   const validRole = await Role.findOne({ role })
@@ -36,9 +36,21 @@ const categoryValidator = async id => {
   }
 }
 
+const productValidator = async id => {
+  try {
+    const product = await Product.findById(id)
+    if (!product) {
+      throw new Error(`Product with ID: ${id} not found`)
+    }
+  } catch (error) {
+    throw new Error(`Product with ID: ${id} not found`)
+  }
+}
+
 module.exports = {
   roleValidator,
   emailValidator,
   userValidator,
   categoryValidator,
+  productValidator,
 }

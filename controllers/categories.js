@@ -1,4 +1,4 @@
-const { Category, User } = require('../models')
+const { Category } = require('../models')
 
 const getCategories = async (req, res) => {
   const { limit = 5, skip = 0 } = req.query
@@ -19,8 +19,8 @@ const getCategory = async (req, res) => {
 
 const addCategory = async (req, res) => {
   const name = req.body.name.toLowerCase()
-  const categoryDb = await Category.findOne({ name })
-  if (categoryDb) {
+  const categoryDB = await Category.findOne({ name })
+  if (categoryDB) {
     return res
       .status(400)
       .json({ ok: false, message: `Category ${name} already exist` })
