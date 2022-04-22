@@ -47,10 +47,19 @@ const productValidator = async id => {
   }
 }
 
+const collectionsValidator = async (collection, allowList = []) => {
+  if (!allowList.includes(collection)) {
+    throw new Error(
+      `Collection '${collection}' not found. The allowed collections are: ${allowList}`
+    )
+  }
+}
+
 module.exports = {
   roleValidator,
   emailValidator,
   userValidator,
   categoryValidator,
   productValidator,
+  collectionsValidator,
 }

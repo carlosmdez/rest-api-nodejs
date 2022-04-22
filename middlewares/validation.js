@@ -8,6 +8,20 @@ const validateFields = (req, res, next) => {
   next()
 }
 
+const validateFile = (req, res, next) => {
+  const { files } = req
+  if (!files || Object.keys(files).length === 0) {
+    return res
+      .status(400)
+      .json({ ok: false, message: 'No files were uploaded.' })
+  } else if (!files.file) {
+    return res
+      .status(400)
+      .json({ ok: false, message: `'file' prop is expected.` })
+  }
+  next()
+}
+
 const isAdminRole = (req, res, next) => {
   if (!req?.authUser) {
     return res.status(500).json({ message: 'Token not verified' })
@@ -35,4 +49,4 @@ const allowRoles = (...args) => {
   }
 }
 
-module.exports = { validateFields, isAdminRole, allowRoles }
+module.exports = { validateFields, isAdminRole, allowRoles, validateFile }
