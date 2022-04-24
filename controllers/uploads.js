@@ -1,5 +1,7 @@
 const path = require('path')
 const fs = require('fs')
+const cloudinary = require('cloudinary').v2
+cloudinary.config(process.env.CLOUDINARY_URL)
 
 const { uploadHandler } = require('../helpers/upload-files')
 const { User, Product } = require('../models')
@@ -55,6 +57,48 @@ const updateImage = async (req, res) => {
   }
 }
 
+const updateImageCloudinary = async (req, res) => {
+  const { collection, id } = req.params
+  let model = null
+  switch (collection) {
+    case 'users':
+      model = await User.findById(id)
+      if (!model)
+        return res.status(400).json({ ok: false, message: 'User not found.' })
+      break
+    case 'products':
+      model = await Product.findById(id)
+      if (!model)
+        return res
+          .status(400)
+          .json({ ok: false, message: 'Product not found.' })
+      break
+    default:
+      return res.status(500).json({
+        ok: false,
+        message: `Collection not implemented`,
+      })
+  }
+
+  // Delete previous image
+  if (model.img) {
+    const fileName = model.img.split('/')
+    const imgName = fileName[fileName.length - 1]
+    const [public_id] = imgName.split('.')
+    cloudinary.uploader.destroy(public_id)
+  }
+
+  const { tempFilePath } = req.files.file
+  try {
+    const { secure_url } = await cloudinary.uploader.upload(tempFilePath)
+    model.img = secure_url
+    await model.save()
+    return res.json({ ok: true, model })
+  } catch (error) {
+    res.status(500).json({ ok: false, message: error })
+  }
+}
+
 const showImage = async (req, res) => {
   const { collection, id } = req.params
   let model = null
@@ -89,4 +133,4 @@ const showImage = async (req, res) => {
   res.status(500).json({ ok: false, message: 'Image not found' })
 }
 
-module.exports = { uploadFile, updateImage, showImage }
+module.exports = { uploadFile, updateImage, showImage, updateImageCloudinary }
